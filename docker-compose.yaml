@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  swivl-test-api-nginx:
+    image: swivl-test-api-nginx:0.0.1
+    build:
+      context: docker/nginx
+    ports:
+    - 8080:80
+  swivl-test-api-fpm:
+    image: swivl-test-api-fpm:0.0.1
+    build:
+      context: .
+      dockerfile: docker/fpm/Dockerfile
+    volumes:
+    - .:/app
+  swivl-test-api-mysql:
+    image: swivl-test-api-mysql:0.0.1
+    build:
+      context: docker/mysql
+    volumes:
+      - ./data:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_DATABASE=swivl_test_api
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    command: --init-file /data/application/init.sql

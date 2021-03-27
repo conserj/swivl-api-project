@@ -1,0 +1,1 @@
+CREATE DATABASE IF NOT EXISTS swivl_test_api;
